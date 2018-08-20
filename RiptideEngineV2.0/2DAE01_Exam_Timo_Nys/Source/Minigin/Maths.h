@@ -1,7 +1,8 @@
 #pragma once
-#include <glm/detail/type_vec2.hpp>
+#include "Structs.h"
 
-inline glm::vec2 Lerp(glm::vec2 beginPos,glm::vec2 endPos,float percent)
+//LERP calculation
+inline FLOAT2 Lerp(FLOAT2 beginPos,FLOAT2 endPos,float percent)
 {
-	return (beginPos + percent * (endPos - beginPos));
+	return beginPos + (endPos - beginPos) * percent;
 }

@@ -8,8 +8,11 @@ public:
 	~FPSCalculatorComponent();
 
 	void Update(float deltaTime) override;
-	int GetFps()const { return mFps; }
+	int GetFps()const { return m_Fps; }
 private:
-	int mFps = 0;
+	float m_FpsUpdateTimer = 0.0f;
+	float m_FpsMaxTimer = 1.0f;
+	int m_Fps = 0;
+	
 };
 

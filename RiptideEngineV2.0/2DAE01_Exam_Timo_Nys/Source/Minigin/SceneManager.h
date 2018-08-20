@@ -6,14 +6,15 @@
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		void CreateScene(std::shared_ptr<Scene> gameScene);
+		std::shared_ptr<Scene> CreateScene(const std::string& name);
 		void SetActiveScene(const std::string name);
-		std::shared_ptr<Scene> GetActiveScene()const { return mActiveScene; }
+		std::shared_ptr<Scene> GetActiveScene()const { return m_spActiveScene; }
+		std::shared_ptr<Scene> GetSceneWithName(const std::string& sceneName)const;
 
 		void Update(float deltaTime);
 
 	private:
-		std::vector<std::shared_ptr<Scene>> mScenes;
-		std::shared_ptr<Scene> mActiveScene;
+		std::vector<std::shared_ptr<Scene>> m_spScenes;
+		std::shared_ptr<Scene> m_spActiveScene;
 	};
 

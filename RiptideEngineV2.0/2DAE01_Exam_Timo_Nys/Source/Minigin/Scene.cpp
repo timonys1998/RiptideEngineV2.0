@@ -1,55 +1,38 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "RenderComponent.h"
-#include "TextureComponent.h"
-#include "TextComponent.h"
+#include "algorithm"
 
 unsigned int Scene::idCounter = 0;
 
-Scene::Scene(const std::string& name) : mName(name) {}
+Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() = default;
 
 void Scene::Add(const std::shared_ptr<GameObject>& object)
 {
-	mObjects.push_back(object);
+	m_spObjects.push_back(object);
+}
+
+void Scene::Remove(const std::shared_ptr<GameObject>& object)
+{
+	m_spObjects.erase(std::remove(m_spObjects.begin(), m_spObjects.end(), object), m_spObjects.end());
 }
 
 void Scene::Update(float deltaTime)
 {
-	for(auto gameObject : mObjects)
+	for(auto gameObject : m_spObjects)
 	{
-		gameObject->Update(deltaTime);
-		gameObject->ObjectUpdate(deltaTime);
-	}
-	SceneUpdate(deltaTime);
-}
-
-void Scene::Render() const
-{
-	for (const auto gameObject : GetObjects())
-	{
-		const std::shared_ptr<RenderComponent> temp = gameObject->GetComponent<RenderComponent>();
-		if (temp != nullptr && temp->ShouldRender() && gameObject->GetComponent<RenderComponent>()->GetTextureToRender() != nullptr)
-		{
-			temp->RenderTexture();
-		}
-		for(const auto child : gameObject->GetChildren())
-		{
-			const std::shared_ptr<RenderComponent> temp1 = child->GetComponent<RenderComponent>();
-			if (temp1 != nullptr && temp1->ShouldRender() && temp1->GetTextureToRender() != nullptr)
-			{
-				temp1->RenderTexture();
-			}
-
-		}
+		if(gameObject)
+			gameObject->Update(deltaTime);
 	}
 }
 
-void Scene::SceneRender() const
-{
-}
+
+
+
+
+
 
 
 

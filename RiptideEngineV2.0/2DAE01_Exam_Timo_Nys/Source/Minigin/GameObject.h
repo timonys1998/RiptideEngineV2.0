@@ -9,18 +9,23 @@ class BaseComponent;
 	class GameObject : public std::enable_shared_from_this<GameObject>
 	{
 	public:
-		virtual void Init();
+		//A create / instantiate function based upon unity
+		static std::shared_ptr<GameObject> Instantiate(const FLOAT2& position = { 0.0f,0.0f });
+		explicit GameObject() = default;
+
 		void Update(float deltaTime);
-		virtual void ObjectUpdate(float deltaTime) { UNREFERENCED_PARAMETER(deltaTime); };
+
 	
 		void AddComponent(std::shared_ptr<BaseComponent> component);
 		void RemoveComponent(std::shared_ptr<BaseComponent> component);
-		void AddChild(std::shared_ptr<GameObject> child);
-		void RemoveChild(std::shared_ptr<GameObject> child);
-		const std::vector<std::shared_ptr<GameObject>> GetChildren() const { return mChildren; }
 
-		explicit GameObject();
-		virtual ~GameObject();
+		std::string GetTag()const { return m_Tag; }
+		void SetTag(const std::string& tag)
+		{
+			m_Tag = tag;
+		}
+		
+		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -30,7 +35,7 @@ class BaseComponent;
 		template<class T>
 		std::shared_ptr<T> GetComponent()
 		{
-			for (const auto comp : mComponents)
+			for (const auto comp : m_spComponents)
 			{
 				//We dont check for nullptr cause the component should not be in the vector if its nullptr / We only check if its the type
 				if (typeid(*comp) == typeid(T))
@@ -43,15 +48,28 @@ class BaseComponent;
 		}
 
 		template<class T>
+		std::vector<std::shared_ptr<T>> GetAllComponentsOfType()
+		{
+			std::vector<std::shared_ptr<T>> components;
+			for(const auto comp : m_spComponents)
+			{
+				if(typeid(*comp) == typeid(T))
+				{
+					components.push_back(std::static_pointer_cast<T>(comp));
+				}
+			}
+			return components;
+		}
+
+		template<class T>
 		bool HasComponent()
 		{
 			return GetComponent<T>() != nullptr;
 		}
-
+	protected:
 		
-
+	
 	private:
-		std::shared_ptr<Transform> mTransform = std::make_shared<Transform>();
-		std::vector<std::shared_ptr<BaseComponent>> mComponents;
-		std::vector<std::shared_ptr<GameObject>> mChildren;
+		std::vector<std::shared_ptr<BaseComponent>> m_spComponents;
+		std::string m_Tag {""};
 	};

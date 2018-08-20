@@ -3,43 +3,18 @@
 
 class Player : public GameObject
 {
-	
 public:
-	enum Dir
-	{
-		RIGHT,
-		LEFT,
-		UP,
-		DOWN
-	};
-	enum ControlsType
-	{
-		KEYBOARD,
-		CONTROLLER
-	};
-	explicit Player(const glm::vec2& pos,const std::string texturePath,ControlsType controllerType = KEYBOARD);
-	virtual ~Player();
+	static std::shared_ptr<Player> Instantiate(const FLOAT2& position = { 0.0f,0.0f },ControlType controlsType = ControlType::Keyboard,bool isEnemy = false);
+	Player() = default;
+	~Player();
 
-	void Init() override;
-	Dir GetDirection()const { return  mDirection; }
-	void SetDirection(Dir direction);
-	void Move( glm::vec2 futurePos,float deltaTime);
-	void Die();
-
-	bool IsAlive()const { return mIsAlive; }
-	int GetLives()const { return mLives; }
-private:
-	void Respawn();
-
-	glm::vec2 mCurrentPos;
-	glm::vec2 mFuturePos;
-	const std::string mTexturePath;
-	Dir mDirection = LEFT;
+	Player(const Player& other) = delete;
+	Player(const Player&& other) = delete;
+	Player& operator=(const Player& other) = delete;
+	Player& operator=(const Player&& other) = delete;
 	
-	ControlsType mControllerType;
-	float mMoveTimer = 0.0f;
-	bool mGoToNext = true;
-	bool mIsAlive = true;;
-	int mLives = 3;
+private:
+	
+	static int m_PlayerCount;
 };
 

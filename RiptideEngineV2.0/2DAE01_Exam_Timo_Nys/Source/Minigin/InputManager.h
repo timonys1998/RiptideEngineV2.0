@@ -7,7 +7,7 @@
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		bool ProcessInput();
+		void HandleInput();
 		bool IsPressed(InputComponent::Button button) const;
 	private:
 		XINPUT_STATE currentState{};

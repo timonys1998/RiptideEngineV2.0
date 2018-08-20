@@ -8,15 +8,13 @@
 		
 	public:
 		void Add(const std::shared_ptr<GameObject>& object);
+		void Remove(const std::shared_ptr<GameObject>& object);
 
-		std::string GetName() { return mName; };
-		const std::vector<std::shared_ptr<GameObject>> GetObjects() const { return mObjects; }
+		std::string GetName() { return m_Name; };
+		const std::vector<std::shared_ptr<GameObject>> GetObjects() const { return m_spObjects; }
 
-		virtual void Init() = 0;
-		virtual void Update(float deltaTime);
-		virtual void Render() const;
-		virtual void SceneRender()const;
-		virtual void SceneUpdate(float deltaTime) = 0;
+
+		void Update(float deltaTime);
 		
 		explicit Scene(const std::string& name);
 		virtual ~Scene();
@@ -26,8 +24,8 @@
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
-		std::string mName{};
-		std::vector <std::shared_ptr<GameObject>> mObjects{};
+		std::string m_Name{};
+		std::vector <std::shared_ptr<GameObject>> m_spObjects{};
 
 		static unsigned int idCounter; 
 	};

@@ -1,34 +1,32 @@
 #include "MiniginPCH.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
-#include "Renderer.h"
+#include "RenderSystem.h"
 #include "BaseComponent.h"
 #include "TextureComponent.h"
 #include "algorithm"
-
-GameObject::GameObject()
-{
-	mComponents.push_back(mTransform);
-}
-
-void GameObject::Init()
-{
-	
-}
+#include "RenderComponent.h"
+#include "InputComponent.h"
 
 
 GameObject::~GameObject() = default;
 
+std::shared_ptr<GameObject> GameObject::Instantiate(const FLOAT2& position)
+{
+	std::shared_ptr<GameObject> gameobj = std::make_shared<GameObject>();
+	gameobj->AddComponent(std::make_shared<Transform>(position));
+	return gameobj;
+}
+
+
+
 void GameObject::Update(float deltaTime)
 {
-	for(auto c : mComponents)
+	for(auto c : m_spComponents)
 	{
 		c->Update(deltaTime);
 	}
-	for(auto c : mChildren)
-	{
-		c->Update(deltaTime);
-	}
+	
 }
 
 
@@ -39,15 +37,14 @@ void GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
 		std::cout << "GameObject::AddComponent >> Cannot add transform component, this is done at initialization of the object \n";
 		return;
 	}
-	for(auto comp : mComponents )
+	else if(typeid(component) == typeid(RenderComponent) && HasComponent<RenderComponent>())
 	{
-		if(typeid(component) == typeid(comp))
-		{
-			std::cout << "GameObject::AddComponent >> Cannot add a component already on the gameobject \n";
-		}
+		std::cout << "GameObject::AddComponent >> Cannot add more than 1 render component!\n";
+		return;
 	}
-	mComponents.push_back(component);
-	component->mOwner = shared_from_this();
+	
+	m_spComponents.push_back(component);
+	component->m_wpOwner = shared_from_this();
 }
 
 
@@ -55,17 +52,9 @@ void GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
 void GameObject::RemoveComponent(std::shared_ptr<BaseComponent> component)
 {
 
-	mComponents.erase(std::remove(mComponents.begin(), mComponents.end(), component), mComponents.end());
+	m_spComponents.erase(std::remove(m_spComponents.begin(), m_spComponents.end(), component), m_spComponents.end());
 }
 
-void GameObject::AddChild(std::shared_ptr<GameObject> child)
-{
-	mChildren.push_back(child);
-}
 
-void GameObject::RemoveChild(std::shared_ptr<GameObject> child)
-{
-	mChildren.erase(std::remove(mChildren.begin(), mChildren.end(), child), mChildren.end());
-}
 
 

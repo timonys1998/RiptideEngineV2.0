@@ -4,15 +4,16 @@
 
 Texture2D::~Texture2D()
 {
-	SDL_DestroyTexture(mTexture);
+	SDL_DestroyTexture(m_pTexture);
+	m_pTexture = nullptr;
 }
 
 SDL_Texture* Texture2D::GetSDLTexture() const
 {
-	return mTexture;
+	return m_pTexture;
 }
 
 Texture2D::Texture2D(SDL_Texture* texture)
 {
-	mTexture = texture;
+	m_pTexture = texture;
 }

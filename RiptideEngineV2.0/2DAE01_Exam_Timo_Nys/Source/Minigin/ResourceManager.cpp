@@ -4,11 +4,12 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "Renderer.h"
+#include "RenderSystem.h"
 #include "Texture2D.h"
 #include "Font.h"
+#include "RenderSystem.h"
 
-void ResourceManager::Init(std::string&& dataPath)
+void ResourceManager::Init(std::string& dataPath)
 {
 	mDataPath = std::move(dataPath);
 
@@ -33,7 +34,7 @@ void ResourceManager::Init(std::string&& dataPath)
 std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file)
 {
 	std::string fullPath = mDataPath + file;
-	SDL_Texture *texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	SDL_Texture *texture = IMG_LoadTexture(RenderSystem::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	if (texture == nullptr) 
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());

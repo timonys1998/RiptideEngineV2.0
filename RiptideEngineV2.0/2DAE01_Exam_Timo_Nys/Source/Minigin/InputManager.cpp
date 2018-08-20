@@ -3,14 +3,24 @@
 #include <SDL.h>
 #include "InputComponent.h"
 #include <cassert>
+#include "SceneManager.h"
+#include "Scene.h"
 
 
-bool InputManager::ProcessInput()
+void InputManager::HandleInput()
 {
 	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
 	XInputGetState(0, &currentState);
+
+	auto activeScene = SceneManager::GetInstance().GetActiveScene();
+	auto sceneObjects = activeScene->GetObjects();
+	for (auto i = 0; i < sceneObjects.size(); ++i)
+	{
+		auto inpCom = sceneObjects.at(i)->GetComponent<InputComponent>();
+		if (inpCom)
+			inpCom->HandleInput();
+	}
 	
-	return true;
 }
 
 bool InputManager::IsPressed(InputComponent::Button button) const
@@ -25,6 +35,10 @@ bool InputManager::IsPressed(InputComponent::Button button) const
 		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
 	case InputComponent::Button::DPAD_LEFT:
 		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
+	case InputComponent::Button::Button_X:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_X; 
+	case InputComponent::Button::Button_B:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
 	case InputComponent::Button::UPARROW:
 		if (GetAsyncKeyState(VK_UP) & 0x8000)return true;
 		return false;
@@ -36,6 +50,12 @@ bool InputManager::IsPressed(InputComponent::Button button) const
 		return false;
 	case InputComponent::Button::LEFTARROW:
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)return true;
+		return false;
+	case InputComponent::Button::SPACE:
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)return true;
+		return false;
+	case InputComponent::Button::ENTER:
+		if (GetAsyncKeyState(VK_RETURN) & 0x8000)return true;
 		return false;
 	case InputComponent::Button::NUM1:
 		if (GetAsyncKeyState(SDLK_1) & 0x8000)return true;

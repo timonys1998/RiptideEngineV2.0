@@ -9,8 +9,8 @@ class GameObject;
 		virtual ~BaseComponent();
 		virtual void Update(float deltaTime) = 0;
 
-		void SetOwner(std::shared_ptr<GameObject>owner) { mOwner = owner; }
-		std::shared_ptr<GameObject> GetOwner()const { return mOwner.lock(); }
+		virtual void SetOwner(std::weak_ptr<GameObject>owner) { m_wpOwner = owner; }
+		virtual std::weak_ptr<GameObject> GetOwner()const { return m_wpOwner; }
 
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
@@ -19,7 +19,7 @@ class GameObject;
 
 	protected:
 		friend class GameObject;
-		std::weak_ptr<GameObject> mOwner;
+		std::weak_ptr<GameObject> m_wpOwner;
 	};
 
 
