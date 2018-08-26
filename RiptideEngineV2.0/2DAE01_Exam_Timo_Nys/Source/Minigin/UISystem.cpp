@@ -8,6 +8,7 @@
 #include "FPSCalculatorComponent.h"
 
 
+
 void UISystem::MakeMenu(std::shared_ptr<Scene> menu)
 {
 	m_spMainMenu = GameObject::Instantiate();
@@ -20,6 +21,8 @@ void UISystem::MakeMenu(std::shared_ptr<Scene> menu)
 	m_spMainMenu->GetComponent<InputComponent>()->AddInput(InputComponent::Button::NUM1, std::make_shared<SelectMode>(GameMode::Singleplayer));
 	m_spMainMenu->GetComponent<InputComponent>()->AddInput(InputComponent::Button::NUM2, std::make_shared<SelectMode>(GameMode::COOP));
 	m_spMainMenu->GetComponent<InputComponent>()->AddInput(InputComponent::Button::NUM3, std::make_shared<SelectMode>(GameMode::Versus));
+	
+		
 
 	//FPS counter
 	m_spFpsCounter = GameObject::Instantiate(FLOAT2(10.0f, 10.0f));

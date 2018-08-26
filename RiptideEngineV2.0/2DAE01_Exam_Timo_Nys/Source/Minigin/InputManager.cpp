@@ -14,7 +14,7 @@ void InputManager::HandleInput()
 
 	auto activeScene = SceneManager::GetInstance().GetActiveScene();
 	auto sceneObjects = activeScene->GetObjects();
-	for (auto i = 0; i < sceneObjects.size(); ++i)
+	for (unsigned int i = 0; i < sceneObjects.size(); ++i)
 	{
 		auto inpCom = sceneObjects.at(i)->GetComponent<InputComponent>();
 		if (inpCom)
@@ -65,6 +65,9 @@ bool InputManager::IsPressed(InputComponent::Button button) const
 		return false;
 	case InputComponent::Button::NUM3:
 		if (GetAsyncKeyState(SDLK_3) & 0x8000)return true;
+		return false;
+	case InputComponent::Button::LeftMouseButton:
+		if (GetAsyncKeyState(SDL_BUTTON_LEFT) & 0x8000)return true;
 		return false;
 	default: return false;
 	}

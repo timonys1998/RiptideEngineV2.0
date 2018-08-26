@@ -1,4 +1,4 @@
-Riptide engine design choices - https://github.com/timonys1998/RiptideEngine
+Riptide engine design choices - https://github.com/timonys1998/RiptideEngineV2.0/tree/master/RiptideEngineV2.0/2DAE01_Exam_Timo_Nys
 
 Engine is inspired by the Unity Entity Component System
 Every object in the game consists of different smaller components that all have their own role.
@@ -11,11 +11,24 @@ Basecomponent: Basically an interface for all other Components, cannot be instan
 InputComponent: Maps keyboard and controllerkeys to commands. Used to control everything in the game.
 TextComponent: Close related to texturecomponent but instead makes a text texture instead of an actual image, also used tio change this text.
 FPSCalculatorComponent: Calculates the FPS depending on the elapsed time between two frames(deltaTime);
-AIComponent: Random movement behaviour.
+AIComponent: Random movement behaviour and placing bombs.
+BombComponent:Component for exploding bomb behaviour.
+DeathComponent: Behaviour upon the death of an entity.
+ExplosionComponent: Hndles the propagation and range of the explosion.
+GameModeSelectorComponent: Handles gamemode selecting and instantiating the right entities depending on this mode.
+HealthComponent: keeps track of lives and can edit the value.
+MoveComponent: Movement
+ObserverComponent: Used to make an entity or object an observer.
+PickupComponent: Defines the type of a pickup.
+PlayerInfoComponent: Keeps track of specific playerdata.
+SubjectComponent: Keeps a list of observers and updates those.
+
 
 With this system it is really easy and straightforward to add new components without breaking anything.
 
-Every GameObject can use the templated functions GetComponent to use functionality of the components on the gameobject.
+I then have specific systems and managers making use of all my different components.
+
+Every GameObject can use templated functions like GetComponent, HsComponent,..
 
 Design choices:
 The engine uses no physics or networking so for the gameloop I decided to use a variable time value(deltaTime) instead of a fixed one.
@@ -27,6 +40,8 @@ For input I use the command pattern , which basically invokes a certain command 
 inputcomponent.
 
 My scenegraph makes sure only the scene currently set active is Updated and Rendered -> this to improve performance.
+
+My player is an observer that listens to events like picking up certain pickups. Then the players data is updated accordingly.
 
 Future changes: More error handling, Scaling of textures, rotation 
 

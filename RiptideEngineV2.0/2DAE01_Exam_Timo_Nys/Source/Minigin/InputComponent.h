@@ -26,7 +26,10 @@ public:
 		ENTER,
 		NUM1,
 		NUM2,
-		NUM3
+		NUM3,
+
+		//Mouse
+		LeftMouseButton
 	};
 
 	explicit InputComponent();

@@ -21,7 +21,7 @@ void RenderSystem::Render()const
 	SDL_RenderClear(m_pRenderer);
 	auto activeScene = SceneManager::GetInstance().GetActiveScene();
 	auto sceneObjects = activeScene->GetObjects();
-	for(auto i = 0; i < sceneObjects.size();++i)
+	for(unsigned int i = 0; i < sceneObjects.size();++i)
 	{
 		auto renCom = sceneObjects.at(i)->GetComponent<RenderComponent>();
 		if (renCom && renCom->ShouldRender())

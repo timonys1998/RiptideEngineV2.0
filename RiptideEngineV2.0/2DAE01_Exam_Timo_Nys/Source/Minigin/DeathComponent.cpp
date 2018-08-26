@@ -23,10 +23,12 @@ void DeathComponent::Die()const
 	owner->GetComponent<RenderComponent>()->EnableRendering(false);
 	if (owner->HasComponent<PlayerInfoComponent>()) {
 		name = owner->GetComponent<PlayerInfoComponent>()->GetName();
+		Grid::GetInstance().RemoveEntity(name);
 		Grid::GetInstance().CheckGameOver();
 	}
-	else
+	else {
 		name = owner->GetComponent<AIComponent>()->GetName();
-	Grid::GetInstance().RemoveEntity(name);
+		Grid::GetInstance().RemoveEntity(name);
+	}
 	SceneManager::GetInstance().GetActiveScene()->Remove(owner);
 }

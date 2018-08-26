@@ -8,6 +8,11 @@
 #include "PlayerInfoComponent.h"
 #include "UISystem.h"
 #include <algorithm>
+#include <SDL.h>
+
+#include "Game.h"
+
+
 
 
 SetDir::SetDir(Direction direction)
@@ -67,8 +72,14 @@ void Detonate::Execute(std::shared_ptr<GameObject> obj)
 		return bomb.second->GetComponent<BombComponent>()->GetOwning()->GetComponent<PlayerInfoComponent>()->GetID() == obj->GetComponent<PlayerInfoComponent>()->GetID();
 	});
 
-	if(found != bombs.end())
+	if (found != bombs.end()) {
 		(*found).second->GetComponent<BombComponent>()->Explode();
+
+		if (obj->GetComponent<PlayerInfoComponent>()->GetControls() == ControlType::Keyboard)
+			obj->GetComponent<InputComponent>()->RemoveInput(InputComponent::Button::ENTER);
+		else
+			obj->GetComponent<InputComponent>()->RemoveInput(InputComponent::Button::Button_B);
+	}
 
 }
 

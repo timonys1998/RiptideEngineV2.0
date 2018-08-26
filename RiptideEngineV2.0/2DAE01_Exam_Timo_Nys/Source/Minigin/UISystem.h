@@ -13,6 +13,7 @@ public:
 	void ChangeHealthValue(int playerID, int value)const;
 private:
 	std::shared_ptr<GameObject> m_spMainMenu;
+	
 	std::shared_ptr<GameObject> m_spLivesP1;
 	std::shared_ptr<GameObject> m_spLivesP2;
 	std::shared_ptr<GameObject> m_spBombsAvailableP1;

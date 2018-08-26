@@ -21,6 +21,9 @@ SoundEffectComponent::~SoundEffectComponent()
 
 void SoundEffectComponent::PlaySound()
 {
-	if(Mix_PlayChannel(-1, m_pSound, 0) == -1)
+	if (Mix_PlayChannel(-1, m_pSound, 0) == -1)
 		std::cout << "WTF";
 }
+
+
+

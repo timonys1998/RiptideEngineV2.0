@@ -12,6 +12,8 @@ public:
 	virtual void Execute(std::shared_ptr<GameObject> obj) = 0;
 };
 
+
+
 class SetDir : public Command
 {
 public:
